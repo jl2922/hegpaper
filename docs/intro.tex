@@ -1,0 +1,39 @@
+\section{Introduction}
+The homogeneous electron gas (HEG) is one of the most fundamental models in condensed-matter physics.
+With a tunable parameter, the Wigner-Seitz radius $r_s$, controlling the density of the electrons, HEG provides us a simple paradigm for studying interacting fermions problems of a wide range of systems from weakly correlated to strongly correlated.
+In addition, HEG is a cornerstone of the density functional theory (DFT).
+In the local density approximation (LDA), the local exchange-correlation energy $\epsilon_{xc}$ comes from HEG~\cite{perdew1986density, dahl2013local}. 
+And in the parametrization of more accurate exchange-correlation functionals, HEG energies are also used extensively~\cite{lundqvist2013theory}.
+
+The first accurate calculation of HEG ground state energies over a range of $r_s$ using \textit{ab initio} methods comes from the diffusion Monte Carlo (DMC)~\cite{ceperley1980ground}. However, due to the fixed-node approximation, the energies from DMC are not exact and depend heavily on the quality of the trail wavefunctions.
+Several attempts have successfully reduced the fixed-node error, but the question of the magnitude of the remaining errors and the new errors introduced by them has never been completely answered~\cite{kwon1998effects, rios2006inhomogeneous}.
+
+The full configuration interaction quantum Monte Carlo (FCIQMC) is another quantum Monte Carlo based method in the second quantized space. It stochastically samples the configuration space to approximate the full configuration interaction (FCI) energy at a reduced computational cost, and achieved a significantly and variationally lower energy for HEG $r_s=0.5$ than DMC~\cite{shepherd2012investigation}.
+However, FCIQMC has the basis set incompleteness error and requires a complete basis set (CBS) extrapolation, which in turn introduces an extrapolation error.
+In the mid-to-high density regime, the basis set incompleteness error dominates the total errors.
+For example, for HEG with $r_s=0.5$ and 14 electrons in each periodic box, the two largest FCIQMC calculations, which use 778 and 1850 orbitals and give $-0.5893(3)$~Ha and $-0.5936(3)$~Ha respectively, a $4.3$~mHa difference, which is much larger than the uncertainty of FCIQMC itself.
+Also, FCIQMC uses initiator approximation to skip side the Fermion-sign problem, which introduces the initiator error.
+This error can only be reduced by using a large number of walkers, thus also limits the accuracy.
+
+The coupled cluster Monte Carlo (CCMC) method with high excitation levels reproduces the results from FCIQMC for 14 electrons.
+It also shows that for HEG in the mid-to-high density regime, excitation levels all the way to four, i.e., CCSDTQ, are necessary to achieve comparable results as FCIQMC~\cite{neufeld2017study}.
+However, due to the high computational cost, CCSDTQ with CCMC has only been applied to 14 electrons and 358 orbitals.
+
+The method that we use in this paper is a modified version of the recently proposed fast heat-bath configuration interaction (SHCI).
+HCI is a selected configuration interaction plus perturbation method (SCI+PT) and distinguishes from other SCI+PT methods in that it uses precomputed double excitation lists to significantly improve the efficiency in both the variational stage and perturbation stage~\cite{holmes2016heat}.
+HCI in its original form requires a large amount of memory in the perturbation stage.
+The semistochastic heat-bath configuration interaction (SHCI) eliminates this memory bottleneck by performing stochastic perturbation on less important determinants~\cite{sharma2017semistochastic}.
+SHCI has several attractive features, such no sign problem, no autocorrelation, and it is usually faster than the original HCI if a stochastic error of 0.1 mHa is acceptable.
+Fast SHCI introduces the fast Hamiltonian generation algorithm and the 3-step perturbation algorithm, which further improve the efficiency of SHCI by more than an order of magnitude~\cite{li2018fast}.
+
+This paper adapts the SHCI algorithm to the homogeneous electron gas problem (HEG).
+We introduce a more space efficient data structure to deal with large basis sets.
+In addition, we optimize the storage and the usage of the double excitation lists, taking into consideration the mementum conservation property of the plane-wave based orbitals of HEG.
+Finally, we apply the revised algorithm to HEG with up to 39,886 orbitals, which is more than an order of magnitude larger than previously ever done with previous essentially exact methods.
+This reduces the extrapolation distances in the complete basis extrapolation significantly and thus gives more accurate and reliable results.
+
+We organize this paper as follows:
+In section \ref{SHCI}, we briefly review the SHCI algorithm and its recent improvements.
+In section \ref{HEG}, we adapt SHCI to the homogeneous electron gas problem (HEG).
+In section \ref{results}, we use the revised algorithm to obtain accurate HEG results in the mid-to-high density regime.
+Section \ref{conclusions} concludes the paper.

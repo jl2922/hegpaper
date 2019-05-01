@@ -1,0 +1,36 @@
+\appendix
+
+\section{HEG Hamiltonian}
+\label{app:heg}
+We consider a system of $N_\uparrow$ spin-up electrons and $N_\downarrow$ spin-down electrons in a $d$-dimensional hypercube of side length $L$ with periodic boundary conditions in all directions and a uniform positive background such that the whole system is neutral.
+
+The Hamiltonian of this system can be expressed in terms of the Yukawa potential $V\left( {\mathbf{r};\kappa } \right) = \frac{{{e^{ - \kappa r}}}}{r}$
+\begin{align*}
+\hat{H}=\sum_{i=1}^{N}-\frac{1}{2}\nabla_i^2+\frac{1}{2}\sum_{i\ne j}^{N} \frac{1}{L^d}\sum_{\mathbf{q}\ne 0}V(\mathbf{q})e^{i\mathbf{q}\cdot(\mathbf{r}_i-\mathbf{r}_j)}
+\end{align*}
+where 
+$N= N_\uparrow + N_\downarrow$,
+$\mathbf{q}=\frac{2\pi}{L}(n_1, n_2, \cdots, n_d)$, $n_i\in\Bbb{Z}$.
+And $V(\mathbf{q})$ is the Fourier transform of the Yukawa potential at $\kappa\to 0$.
+For $d=3$, $V(\mathbf{q})=\frac{4\pi}{q^2}$. \cite{giuliani2005quantum}
+
+To convert the Hamiltonian into its second quantization form
+$$\hat{H}=\sum_{PQ}f_{PQ}a_P^\dag a_Q+\frac{1}{2}\sum_{PQRS}g_{PQRS}a_P^\dag a_R^\dag a_Qa_S$$
+we use the planewave basis set
+$$\phi_P(x)=\frac{1}{\sqrt{L^d}}e^{-i\mathbf{k}_P\cdot\mathbf{r}}\sigma_P(m_s)$$
+where $\sigma_P(m_s)$ is the spin eigenfunction and $\mathbf{k}_P=\frac{2\pi}{L}(n_{P_1}, n_{P_2},\cdots, n_{P_d})$, $n_{P_i}\in\Bbb{Z}$.
+
+After simplification, we can get the coefficients of the second quantization terms
+\begin{align*}
+f_{PQ}= & \frac{\mathbf{k}_Q^2}{2}\delta_{\sigma_P\sigma_Q}\delta_{\mathbf{k}_P\mathbf{k}_Q}\\
+g_{PQRS}= & \frac{1}{L^d}\delta_{\sigma_P\sigma_Q}\delta_{\sigma_R\sigma_S}V(\mathbf{k}_{PQ})\\
+& (1-\delta_{\mathbf{k}_Q\mathbf{k}_P})\delta_{\mathbf{k}_Q+\mathbf{k}_S,\mathbf{k}_P+\mathbf{k}_R}
+\end{align*}
+
+Hence, the Hamiltonian matrix elements between a pair of Slater determinants are
+\begin{align*}
+\langle i|\hat{H}|i\rangle  = & \sum_{P}i_P\frac{\mathbf{k}_P^2}{2}-\frac{1}{2L^d}\sum_{P\ne R}i_Pi_R\delta_{\sigma_P\sigma_R}V(\mathbf{k}_{RP})\\
+\langle i_1|\hat{H}|i_2\rangle  = &  \Gamma_I^{i_1}\Gamma_J^{i_1}\Gamma_K^{i_2}\Gamma_L^{i_2}\delta_{\mathbf{k}_K+\mathbf{k}_L,\mathbf{k}_I+\mathbf{k}_J}\frac{1}{L^d}\\
+&  \lbrack\delta_{\sigma_I\sigma_K}\delta_{\sigma_J\sigma_L}V(\mathbf{k}_{IK})-\delta_{\sigma_I\sigma_L}\delta_{\sigma_J\sigma_K}V(\mathbf{k}_{IL})\rbrack
+\end{align*}
+where $i_P=1$ if and only if orbital $i$ is occupied, $\Gamma_P^i=\sum_{l=1}^{P-1}(-1)^{i_l}$. $|i_1\rangle$ has orbitals $I,J$ occupied while $|i_2\rangle$ has orbitals $K,L$ occupied, $I<J$, $K<L$, and all the other orbitals of $|i_1\rangle$ and $|i_2\rangle$ are the same.

@@ -1,0 +1,51 @@
+\section{Fast Semistochastic Heat-Bath Configuration Interaction}
+\label{SHCI}
+
+In this section, we summarize the fast semistochastic heat-bath configuration interaction (SHCI) algorithm.
+It has two stages, the variational stage, and the perturbation stage.
+
+In the following, we will use $V$ for the variational determinants set and $P$ for the perturbation determinants set.
+
+\subsection{Variational Stage}
+HCI starts with an initial set of determinants $V_0$, usually just the Hartree-Fock determinant, and generates the variational wave function through an iterative process.
+
+In each iteration, we first try to find a set of new determinants $V'$ that connects to the current determinants set $V$.
+A new determinant $D_a$ is connected to a determinant in $V$ if
+$$\exists D _{i} \in V , \mathrm{s . t .} \left|H _{a i} c _{i}\right| \ge \epsilon _{1}$$
+Where $c_i$ is the coefficient of determinant $D_i$ and $H_{ai}$ is the Hamiltonian matrix element between determinant $D_a$ and $D_i$.
+Then, we add the new determinants into $V$, diagonalize and obtain the new lowest eigenvalue $E_{V}$ and eigenvector $\Psi _{V} = \sum _{D _{i} \in V} c _{i} \left|D _{i}\right\rangle$.
+And when the change in $E_V$ falls below a certain threshold, we terminate the process.
+
+This process is similar to other selected-CI methods (SCI) but has a crucial difference in the selection criteria.
+Conventional SCI often use perturbation expressions as the criteria which are expensive to evaluate, such as the $\left|\frac{\sum _{i} H _{a i} c _{i}}{E _{0} - H _{a a}}\right| > \epsilon _{1}$ used in CIPSI \cite{huron1973iterative}.
+While HCI uses the much less expensive $\left|H _{a i} c _{i}\right| \ge \epsilon _{1}$ and new determinants meeting this criterion can be found very efficiently by looking up a few precomputed lists of double excitation matrix elements without evaluating the criterion \cite{holmes2016heat}.
+
+In addition, SHCI introduces the fast Hamiltonian construction algorithm, which speeds up the sparse Hamiltonian matrix construction by an order of magnitude~\cite{li2018fast}.
+
+\subsection{Perturbation Stage}
+The second order perturbation correction from a set of new determinants $P$ is
+$$\Delta E_2^{(\mathrm{d})} = \sum _{D _{a} \in P} \frac{\left(\sum _{D _{i} \in V} H _{a i} c _{i}\right) ^{2}}{E _{V} - H _{a a}}$$
+HCI makes an additional approximation and includes only those $H_{ai}c_{i}$ terms when
+$$\exists D _{i} \in V , \mathrm{s . t .} \left|H _{a i} c _{i}\right| \ge \epsilon _{2}$$
+This criterion allows us to use similar techniques as the variational stage to find the connected determinants using precomputed lists without wasting time on determinants that do not meet the criterion \cite{holmes2016heat}.
+
+We refer to the method above as the deterministic perturbation and it requires storing the entire perturbation space $P$, which causes a memory bottleneck.
+This bottleneck can be eliminated by the semistochastic perturbation algorithm~\cite{sharma2017semistochastic}.
+The combined perturbation correction is 
+$$\Delta E _{2} \left(\epsilon _{2}\right) = \left[\Delta E _{2} ^{\left(\mathrm{s}\right)} \left(\epsilon _{2} \right) - \Delta E _{2} ^{\left(\mathrm{s}\right)} \left(\epsilon _{2} ^{\left(\mathrm{d}\right)}\right)\right] + \Delta E _{2} ^{\left(\mathrm{d}\right)} \left(\epsilon _{2} ^{\left(\mathrm{d}\right)}\right)$$
+where $\epsilon _{2} ^{\left(\mathrm{d}\right)}$ is the deterministic $\epsilon_2$, which can be much larger than the targeting $\epsilon_2$.
+$\Delta E _{2} ^{\left(\mathrm{s}\right)}$ is the stochastic perturbation correction
+\begin{align*}
+\Delta E _{2} ^{\left(\mathrm{s}\right)} = & \frac{1}{N _{d} \left(N _{d} - 1\right)} \left\langle \sum _{D _{a} \in P} \left[\left(\sum _{i} ^{N _{d} ^{\mathrm{( d i f f )}}} \frac{w _{i} c _{i} H _{a i}}{p _{i}}\right) ^{2} \right. \right. \\ + 
+ & \left. \left. \sum _{i} ^{N _{d} ^{\mathrm{( d i f f )}}} \left(\frac{w _{i} \left(N _{d} - 1\right)}{p _{i}} - \frac{w _{i} ^{2}}{p _{i} ^{2}}\right) c _{i} ^{2} H _{a i} ^{2}\right] \frac{1}{E _{0} - E _{a}} \right\rangle
+\end{align*}
+Here $N_d$ is the number of determinants in a sample and $N_d^{\mathrm{(diff)}}$ is the number unique ones.
+$p_i$ and $w_i$ are the probability of selecting determinant $D_i$ and the number of repeats respectively.
+And new determinants are sampled with a finite discrete probability distribution $p _{i} = \frac{\left|c _{i}\right|}{\sum \left|c _{i}\right|}$, which has no sign problem or autocorrelation at all.
+
+We further introduce the 3-step batch perturbation to improve the speed of the perturbative stage.
+Batch perturbation divides the perturbative space into batches and evaluates the perturbative corrections batch by batch.
+This allows us to use much smaller $\epsilon_2^{(d)}$ and much larger $N_d$, both of which give superlinear speedup.
+We also insert a new pseudostochastic step between the original deterministic step and the stochastic step.
+This psedostochastic step evaluates the deterministic perturbation expression in batches, and stops early when the uncertainty of the energy drops below a certain threshold.
+Overall, the 3-step batch perturbation algorithm speeds up perturbative calculations by more than an order of magnitude, and enable us to include the entire Hilbert space during the perturbative stage ($\epsilon_2=0$)~\cite{li2018fast}.

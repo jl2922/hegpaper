@@ -1,0 +1,145 @@
+% ****** Start of file apssamp.tex ******
+%
+%   This file is part of the APS files in the REVTeX 4.1 distribution.
+%   Version 4.1r of REVTeX, August 2010
+%
+%   Copyright (c) 2009, 2010 The American Physical Society.
+%
+%   See the REVTeX 4 README file for restrictions and more information.
+%
+% TeX'ing this file requires that you have AMS-LaTeX 2.0 installed
+% as well as the rest of the prerequisites for REVTeX 4.1
+%
+% See the REVTeX 4 README file
+% It also requires running BibTeX. The commands are as follows:
+%
+%  1)  latex apssamp.tex
+%  2)  bibtex apssamp
+%  3)  latex apssamp.tex
+%  4)  latex apssamp.tex
+%
+\documentclass[%
+reprint,
+ superscriptaddress,
+%groupedaddress,
+%unsortedaddress,
+%runinaddress,
+%frontmatterverbose, 
+%  preprint,
+%showpacs,preprintnumbers,
+%nofootinbib,
+%nobibnotes,
+%bibnotes,
+ amsmath,amssymb,
+ aps,
+%pra,
+%prb,
+%rmp,
+%prstab,
+%prstper,
+%floatfix,
+]{revtex4-1}
+
+\usepackage{graphicx}% Include figure files
+\usepackage{dcolumn}% Align table columns on decimal point
+\usepackage{bm}% bold math
+%\usepackage{hyperref}% add hypertext capabilities
+%\usepackage[mathlines]{lineno}% Enable numbering of text and display math
+%\linenumbers\relax % Commence numbering lines
+
+%\usepackage[showframe,%Uncomment any one of the following lines to test 
+%%scale=0.7, marginratio={1:1, 2:3}, ignoreall,% default settings
+%%text={7in,10in},centering,
+%%margin=1.5in,
+%%total={6.5in,8.75in}, top=1.2in, left=0.9in, includefoot,
+%%height=10in,a5paper,hmargin={3cm,0.8in},
+%]{geometry}
+\usepackage{makecell}
+\usepackage{listings}
+\usepackage{xspace}
+
+\lstset{basicstyle=\ttfamily}
+% \lstset{showstringspaces=false}
+\lstset{columns=fullflexible}
+% \lstset{keepspaces=true}
+\lstset{frame=single}
+\lstset{numbers=right}
+
+\newcommand\nd{\textsuperscript{nd}\xspace}
+\newcommand\rd{\textsuperscript{rd}\xspace}
+\newcommand\nth{\textsuperscript{th}\xspace} %\th is taken already
+
+\begin{document}
+
+%\preprint{APS/123-QED}
+
+\title{Homogeneous Electron Gas Simulation with\\
+Fast Semistochastic Heat-Bath Selected Configuration Interaction}% Force line breaks with \\
+\thanks{J.L. and C.J.U acknowledge support from the National Science Foundation under grant ACI-1534965.}
+
+\author{Junhao Li}
+  \email{jl2922@cornell.edu}
+  \affiliation{Laboratory of Atomic and Solid State Physics, Cornell University, Ithaca, New York 14853, United States}
+\author{Adam Holmes}
+  \affiliation{Laboratory of Atomic and Solid State Physics, Cornell University, Ithaca, New York 14853, United States}
+\author{Frank Petruzielo}
+ %\altaffiliation[Also at ]{Physics Department, XYZ University.}%Lines break automatically or can be forced with \\
+\author{C. J. Umrigar}%
+  \email{CyrusUmrigar@cornell.edu}
+ %\email{Second.Author@institution.edu}
+  \affiliation{Laboratory of Atomic and Solid State Physics, Cornell University, Ithaca, New York 14853, United States}
+
+%\collaboration{MUSO Collaboration}%\noaffiliation
+
+%\author{Charlie Author}
+% \homepage{http://www.Second.institution.edu/~Charlie.Author}
+%\affiliation{
+% Second institution and/or address\\
+% This line break forced% with \\
+%}%
+%\affiliation{
+% Third institution, the second for Charlie Author
+%}%
+%\author{Delta Author}
+%\affiliation{%
+% Authors' institution and/or address\\
+% This line break forced with \textbackslash\textbackslash
+%}%
+
+%\collaboration{CLEO Collaboration}%\noaffiliation
+
+\date{\today}% It is always \today, today,
+             %  but any date may be explicitly specified
+\input{docs/abstract}
+%\pacs{Valid PACS appear here}% PACS, the Physics and Astronomy
+                             % Classification Scheme.
+%\keywords{Suggested keywords}%Use showkeys class option if keyword
+                              %display desired
+\maketitle
+
+%\tableofcontents
+\input{docs/intro.tex}
+\input{docs/shci.tex}
+\input{docs/heg.tex}
+\input{docs/results.tex}
+\input{docs/conclusion.tex}
+
+\section{Acknowledgements}
+This work was supported by the AFOSR through grant FA9550-18-1-0095.
+% A.A.H was supported by the NSF under the grant ACI-1534965 and by the University of Colorado.
+% S.S. acknowledges the funding provided by the NSF through grant CHE-1800584.
+%The computations were performed on the Bridges cluster at the Pittsburgh Supercomputing Center under NSF grant ACI-1445606,
+%and on the Cooley and Theta clusters at Argonne National Laboratory.
+%This work used the Extreme Science and Engineering Discovery Environment (XSEDE), which is supported by National Science Foundation grant number ACI-1548562. Specifically, it used the Bridges system, which is supported by NSF award number ACI-1445606, at the Pittsburgh Supercomputing Center (PSC).
+The computations were performed on the Bridges computer at the Pittsburgh Supercomputing Center supported by NSF grant ACI-1445606, as part of the XSEDE program supported by NSF grant ACI-1548562.
+%and the Argonne Leadership Computing Facility (ALCF) at the Argonne National Laboratory.
+% This research also used a Director’s Discretionary allocation at the Argonne Leadership Computing Facility, which is
+% a DOE Office of Science User Facility supported under Contract DE-AC02-06CH11357.
+
+\input{docs/appendix.tex}
+
+\bibliography{main}
+
+\end{document}
+%
+% ****** End of file apssamp.tex ******
