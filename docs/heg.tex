@@ -11,17 +11,22 @@ Hence, in order to achieve high accuracy for the infinite basis set, we have to 
 
 To reduce storage and improve speed when using a large basis set, we introduce a new way for representing the determinants.
 First, the orbitals are sorted into descending order of importance.
-Then, we use bit-packing for orbitals 1 to 128, and use a self-balancing binary search tree, called red-black tree~\cite{wiki:redblacktree}, to store the indices of the other occupied orbitals.
+Then, we use bit-packing to represent the occupancy of the first few orbitals, which are the most important ones and mostly occupied, and use a self-balancing binary search tree~\cite{wiki:binarysearchtree}, called red-black tree~\cite{wiki:redblacktree}, to store the indices of the other occupied orbitals.
 Fig.~\ref{fig:hybrid} illustrates this hybrid structure.
-The red-black tree is a common data structure for storing a set of distinct objects, which in our case are the indices of the occupied orbitals. The worst case time complexity of both the insertion operation and the deletion operation on a red-black tree is $O(\log N)$.
+
+The red-black tree is a common data structure for storing a set of distinct objects, which in our case are the indices of the occupied orbitals.
+An excitation corresponds to an deletion of an occupied orbital and insertion of an unoccupied orbital.
+The worst case time complexity of both the insertion operation and the deletion operation on a red-black tree is $O(\log N)$.
+Another common operation on determinants is going through the occupied orbitals in order, which corresponds to an inorder traversal~\cite{wiki:treetraversal} of the tree.
+The time complexity of this traversal is $O(N\log N)$, which makes it a better choice than hash table.
 \begin{figure}
   \begin{center}
   \includegraphics[width=0.9\linewidth]{figs/HybridDet.eps}
   \end{center}
   \vspace{-0.2cm}
   \caption{Hybrid Representation for Determinants.
-  The occupancy of the most important 128 orbitals is represented with bit-packing.
-  The indices of the other occupied orbitals are stored in a self-balancing binary search tree~\cite{wiki:redblacktree}.
+  The occupancy of the most important orbitals is represented with bit-packing.
+  The indices of the other occupied orbitals, which are 456, 1234, 2345, and 33333 in this case, are stored in a self-balancing binary search tree~\cite{wiki:redblacktree}.
   }
   \label{fig:hybrid}
 \end{figure}
