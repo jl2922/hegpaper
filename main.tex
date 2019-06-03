@@ -433,24 +433,24 @@ Since the orbitals are momentum eigenstates, momentum conservation can be used
 to reduce the storage of the HCI double excitation helper lists.
 
 First, we find all the possible differences between the momenta of two orbitals.
-Let $M$ be the number of orbitals ($k$ points), then the number of distinct differences between them is also of order $O(M)$.
-For an orbital $i$, we denote the momentum of that orbital to be $k_{i}$.
+Let $M$ be the number of orbitals ($\mathbf{k}$ points), then the number of distinct differences between them is also of order $O(M)$.
+For an orbital $i$, we denote the momentum of that orbital to be $\mathbf{k}_{i}$.
 We use $p$ and $q$ to denote the pair of occupied orbitals during excitation, and $r$ and $s$ to denote the pair of unoccupied orbitals to which the electrons are excited.
-Then we have $k_p + k_q = k_r + k_s$.
-For HEG, as shown in Appendix~\ref{app:heg}, $k_p - k_q$ and $k_p - k_r$ uniquely determines the magnitude of the Hamiltonian matrix element associated with excitation $pq\to rs$.
-Hence, for each possible momentum difference $k_{pq}$, we associate with it a list of $\langle k_{pr}, |H_{pqrs}|\rangle$ pairs in descending order of $|H_{pqrs}|$.
+Then we have $\mathbf{k}_p + \mathbf{k}_q = \mathbf{k}_r + \mathbf{k}_s$.
+For HEG, as shown in Appendix~\ref{app:heg}, $\mathbf{k}_p - \mathbf{k}_q$ and $\mathbf{k}_p - \mathbf{k}_r$ uniquely determines the magnitude of the Hamiltonian matrix element associated with excitation $pq\to rs$.
+Hence, for each possible momentum difference $\mathbf{k}_{pq}$, we associate with it a list of $\langle \mathbf{k}_{pr}, |H_{pqrs}|\rangle$ pairs in descending order of $|H_{pqrs}|$.
 Fig.~\ref{fig:helper} illustrates the structure of these helper lists.
-Finally, when using these helper lists to find important connected determinants to a given reference determinant, we perform the following for each pair of occupied orbitals $p$ and $q$: we go through the list associated with $k_{pq} = k_p - k_q$ to get $k_{pr}$ until the corresponding $|H_{pqrs}|$ falls below a given threshold.
-Using $k_{pr}$ and momentum conservation, we can easily get $r$ and $s$, and thus the connected determinant which satisfies the SHCI criteria.
+Finally, when using these helper lists to find important connected determinants to a given reference determinant, we perform the following for each pair of occupied orbitals $p$ and $q$: we go through the list associated with $\mathbf{k}_{pq} = \mathbf{k}_p - \mathbf{k}_q$ to get $\mathbf{k}_{pr}$ until the corresponding $|H_{pqrs}|$ falls below a given threshold.
+Using $\mathbf{k}_{pr}$ and momentum conservation, we can easily get $r$ and $s$, and thus the connected determinant which satisfies the SHCI criteria.
 \begin{figure}
   \begin{center}
   \includegraphics[width=0.9\linewidth]{figs/HelperList.eps}
   \end{center}
   \vspace{-0.2cm}
   \caption{SHCI Helper Lists for HEG.
-  For each $k_{pq}$, we generate a list of $\langle k_{pr}, |H_{pqrs}|\rangle$ pairs and sort them in descending order of $|H_{pqrs}|$.
-  When trying to find connected determinants from a given spawning determinant, we go through each occupied pair of orbitals $p$ and $q$, calculate their momentum difference $k_{pq}$, and go through the corresponding list until $|H_{pqrs}|$ falls below a certain threshold.
-  For each entry that we go through in the list, we can obtain $r$ and $s$ by using $k_{pr}$ and momentum conservation.
+  For each $\mathbf{k}_{pq}$, we generate a list of $\langle \mathbf{k}_{pr}, |H_{pqrs}|\rangle$ pairs and sort them in descending order of $|H_{pqrs}|$.
+  When trying to find connected determinants from a given spawning determinant, we go through each occupied pair of orbitals $p$ and $q$, calculate their momentum difference $\mathbf{k}_{pq}$, and go through the corresponding list until $|H_{pqrs}|$ falls below a certain threshold.
+  For each entry that we go through in the list, we can obtain $r$ and $s$ by using $\mathbf{k}_{pr}$ and momentum conservation.
   }
   \label{fig:helper}
 \end{figure}
@@ -634,7 +634,7 @@ For $d=3$, $V(\mathbf{q})=\frac{4\pi}{q^2}$. \cite{giuliani2005quantum}
 
 To convert the Hamiltonian into its second quantization form
 \beq
-\hat{H}=\sum_{PQ}f_{PQ}a_P^\dag a_Q+\frac{1}{2}\sum_{PQRS}g_{PQRS}a_P^\dag a_R^\dag a_Qa_S
+\hat{H}=\sum_{PQ}f_{PQ}a_P^\dag a_Q+\frac{1}{2}\sum_{PQRS}g_{PQRS}a_P^\dag a_Q^\dag a_Ra_S
 \eeq
 we use the planewave basis set
 \beq
@@ -645,13 +645,13 @@ where $\sigma_P(m_s)$ is the spin eigenfunction and $\mathbf{k}_P=\frac{2\pi}{L}
 After simplification, we can get the coefficients of the second quantization terms
 \begin{align*}
 f_{PQ}= & \frac{\mathbf{k}_Q^2}{2}\delta_{\sigma_P\sigma_Q}\delta_{\mathbf{k}_P\mathbf{k}_Q}\\
-g_{PQRS}= & \frac{1}{L^d}\delta_{\sigma_P\sigma_Q}\delta_{\sigma_R\sigma_S}V(\mathbf{k}_{PQ})\\
-& (1-\delta_{\mathbf{k}_Q\mathbf{k}_P})\delta_{\mathbf{k}_Q+\mathbf{k}_S,\mathbf{k}_P+\mathbf{k}_R}
+g_{PQRS}= & \frac{1}{L^d}\delta_{\sigma_P\sigma_R}\delta_{\sigma_Q\sigma_S}V(\mathbf{k}_{PR})\\
+& (1-\delta_{\mathbf{k}_R\mathbf{k}_P})\delta_{\mathbf{k}_R+\mathbf{k}_S,\mathbf{k}_P+\mathbf{k}_Q}
 \end{align*}
 
 Hence, the Hamiltonian matrix elements between a pair of Slater determinants are
 \begin{align*}
-\langle i|\hat{H}|i\rangle  = & \sum_{P}i_P\frac{\mathbf{k}_P^2}{2}-\frac{1}{2L^d}\sum_{P\ne R}i_Pi_R\delta_{\sigma_P\sigma_R}V(\mathbf{k}_{RP})\\
+\langle i|\hat{H}|i\rangle  = & \sum_{P}i_P\frac{\mathbf{k}_P^2}{2}-\frac{1}{2L^d}\sum_{P\ne Q}i_Pi_Q\delta_{\sigma_P\sigma_Q}V(\mathbf{k}_{QP})\\
 \langle i_1|\hat{H}|i_2\rangle  = &  \Gamma_I^{i_1}\Gamma_J^{i_1}\Gamma_K^{i_2}\Gamma_L^{i_2}\delta_{\mathbf{k}_K+\mathbf{k}_L,\mathbf{k}_I+\mathbf{k}_J}\frac{1}{L^d}\\
 &  \lbrack\delta_{\sigma_I\sigma_K}\delta_{\sigma_J\sigma_L}V(\mathbf{k}_{IK})-\delta_{\sigma_I\sigma_L}\delta_{\sigma_J\sigma_K}V(\mathbf{k}_{IL})\rbrack
 \end{align*}
